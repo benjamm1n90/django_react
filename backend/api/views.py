@@ -1,9 +1,10 @@
 from django.shortcuts import render
 from django.contrib.auth.models import User
 from rest_framework import generics
-from .serializers import UserSerializer, NoteSerializer
+from .serializers import EstimatorSerializer, UserSerializer, NoteSerializer
 from rest_framework.permissions import IsAuthenticated, AllowAny
-from .models import Note
+from .models import Note, Estimator
+from .services import calculate_price
 
 class NoteListCreate(generics.ListCreateAPIView):
     serializer_class = NoteSerializer
@@ -31,3 +32,22 @@ class CreateUserView(generics.CreateAPIView):
     queryset = User.objects.all()
     serializer_class = UserSerializer
     permission_classes = [AllowAny]
+
+class CreateEstimateView(generics.CreateAPIView):
+    serializer_class = EstimatorSerializer
+    permission_classes = [IsAuthenticated]
+
+    def get_queryset(self):
+        return Estimator.objects.filter(user=self.request.user)
+
+    def perform_create(self, serializer):
+        square_feet = serializer.validated_data['square_footage']
+        pounds = serializer.validated_data['pound_estimate']
+        crew_number = serializer.validated_data['crew_size']
+
+        price = calculate_price(square_feet, pounds, crew_number)
+
+        if serializer.is_valid():
+            serializer.save(user=self.request.user, price=price)
+        else:
+            print(serializer.errors)
