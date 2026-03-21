@@ -33,12 +33,13 @@ class CreateUserView(generics.CreateAPIView):
     serializer_class = UserSerializer
     permission_classes = [AllowAny]
 
-class CreateEstimateView(generics.CreateAPIView):
+class EstimateListCreate(generics.ListCreateAPIView):
     serializer_class = EstimatorSerializer
     permission_classes = [IsAuthenticated]
 
     def get_queryset(self):
-        return Estimator.objects.filter(user=self.request.user)
+        user = self.request.user
+        return Estimator.objects.filter(user=user).order_by("-created_at")
 
     def perform_create(self, serializer):
         square_feet = serializer.validated_data['square_footage']
@@ -47,7 +48,6 @@ class CreateEstimateView(generics.CreateAPIView):
 
         price = calculate_price(square_feet, pounds, crew_number)
 
-        if serializer.is_valid():
-            serializer.save(user=self.request.user, price=price)
-        else:
-            print(serializer.errors)
+        serializer.save(user=self.request.user, price=price)
+
+

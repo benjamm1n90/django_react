@@ -1,0 +1,75 @@
+.estimator-container {
+    max-width: 600px;
+    margin: 40px auto;
+    padding: 25px;
+    background-color: #ffffff;
+    border-radius: 8px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    font-family: Arial, Helvetica, sans-serif;
+}
+
+.estimator-container h2 {
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.estimator-form label {
+    font-weight: bold;
+}
+
+.estimator-form input {
+    width: 100%;
+    padding: 8px;
+    margin-top: 5px;
+    margin-bottom: 15px;
+    border-radius: 4px;
+    border: 1px solid #ccc;
+}
+
+.estimator-form input[type="submit"] {
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    cursor: pointer;
+    font-weight: bold;
+}
+
+.estimator-form input[type="submit"]:hover {
+    background-color: #45a049;
+}
+
+.estimate-result {
+    margin-top: 25px;
+    padding: 15px;
+    background-color: #f5f5f5;
+    border-radius: 6px;
+}
+
+.estimate-result h3 {
+    margin-bottom: 10px;
+}
+
+.estimate-result p {
+    margin: 5px 0;
+}
+
+.estimate-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+}
+
+.estimate-table th,
+.estimate-table td {
+    border: 1px solid #ddd;
+    padding: 10px;
+    text-align: left;
+}
+
+.estimate-table th {
+    background-color: #f4f4f4;
+}
+
+.estimate-table tr:nth-child(even) {
+    background-color: #f9f9f9;
+}

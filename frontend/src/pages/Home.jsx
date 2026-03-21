@@ -2,6 +2,7 @@ import { useState, useEffect } from "react"
 import api from "../api"
 import Note from "../components/Note"
 import "../styles/Home.css"
+import { Link } from "react-router-dom"
 
 function Home() {
     const [notes, setNotes] = useState([]);
@@ -78,6 +79,15 @@ function Home() {
                 <br />
                 <input type="submit" value="Submit"></input>
             </form>
+
+            <div>
+                <h2>Welcome!</h2>
+
+                {/* Link to your Estimate page */}
+                <Link to="/estimate" className="btn">
+                    Go to Moving Estimator
+                </Link>
+            </div>
         </div>
     );
 }
