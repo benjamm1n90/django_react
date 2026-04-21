@@ -22,5 +22,5 @@ class NoteSerializer(serializers.ModelSerializer):
 class EstimatorSerializer(serializers.ModelSerializer):
     class Meta:
         model = Estimator
-        fields = ['id', 'user', 'customer_name', 'square_footage', 'pound_estimate', 'crew_size', 'price', 'created_at']
-        extra_kwargs = {'user': {'read_only': True}, 'price': {'read_only': True}, 'created_at': {'read_only': True}}
+        fields = ['id', 'user', 'customer_name', 'square_footage', 'pound_estimate', 'crew_size', 'price', 'created_at', 'updated_at']
+        extra_kwargs = {'user': {'read_only': True}, 'price': {'read_only': True}, 'created_at': {'read_only': True}, 'updated_at': {'read_only': True}}

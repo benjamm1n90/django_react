@@ -19,6 +19,8 @@ class Estimator(models.Model):
     price = models.FloatField()
     created_at = models.DateTimeField(auto_now_add=True)
 
+    updated_at = models.DateTimeField(auto_now=True)
+
     def __str__(self):
         return f"Estimate by {self.user.username} : {self.created_at.strftime('%Y-%m-%d %H:%M:%S')}"
 # Create your models here.

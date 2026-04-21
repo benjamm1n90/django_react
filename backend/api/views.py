@@ -58,5 +58,22 @@ class DeleteEstimate(generics.DestroyAPIView):
     def get_queryset(self):
         user = self.request.user
         return Estimator.objects.filter(user=user)
+    
+class UpdateEstimate(generics.UpdateAPIView):
+    serializer_class = EstimatorSerializer
+    permission_classes = [IsAuthenticated]
+
+    def get_queryset(self):
+        user = self.request.user
+        return Estimator.objects.filter(user=user)
+    
+    def perform_update(self, serializer):
+        square_feet = serializer.validated_data.get('square_footage')
+        pounds = serializer.validated_data.get('pound_estimate')
+        crew_size = serializer.validated_data.get('crew_size')
+
+        price = calculate_price(square_feet, pounds, crew_size)
+
+        serializer.save(price=price)
 
 
