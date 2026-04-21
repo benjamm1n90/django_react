@@ -12,6 +12,7 @@ class Note(models.Model):
 
 class Estimator(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='estimations')
+    customer_name = models.CharField(max_length=100, default="Customer")
     square_footage = models.IntegerField()
     pound_estimate = models.IntegerField()
     crew_size = models.IntegerField()
@@ -19,5 +20,5 @@ class Estimator(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
-        return f"Estimate for {self.user.username} : {self.created_at.strftime('%Y-%m-%d %H:%M:%S')}"
+        return f"Estimate by {self.user.username} : {self.created_at.strftime('%Y-%m-%d %H:%M:%S')}"
 # Create your models here.

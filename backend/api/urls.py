@@ -5,4 +5,5 @@ urlpatterns = [
     path("notes/", views.NoteListCreate.as_view(), name="note-list"),
     path("notes/delete/<int:pk>/", views.NoteDelete.as_view(), name="delete-note"),
     path("estimates/", views.EstimateListCreate.as_view(), name="create-estimate"),
+    path("estimates/delete/<int:pk>/", views.DeleteEstimate.as_view(), name="delete-estimate"),
 ]

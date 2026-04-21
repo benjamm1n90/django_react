@@ -52,12 +52,16 @@ function Home() {
     return (
         <div>
             <div>
-                <h2>Notes</h2>
-                {notes.map((note) => (<Note note={note} onDelete={deleteNote} key={note.id} />))}
+                <h2>Welcome!</h2>
+
+                {/* Link to your Estimate page */}
+                <Link to="/estimate" className="btn">
+                    Go to Moving Estimator
+                </Link>
             </div>
-            <h2>Create a Note</h2>
+            <h2>Move Details</h2>
             <form onSubmit={createNote}>
-                <label htmlFor="title>">Title</label>
+                <label htmlFor="title>">Customer Name</label>
                 <br />
                 <input
                     type="text"
@@ -67,7 +71,7 @@ function Home() {
                     onChange={(e) => setTitle(e.target.value)}
                     value={title}
                 />
-                <label htmlFor="content">Content:</label>
+                <label htmlFor="content">Detail:</label>
                 <br />
                 <textarea
                     id="content"
@@ -79,14 +83,9 @@ function Home() {
                 <br />
                 <input type="submit" value="Submit"></input>
             </form>
-
             <div>
-                <h2>Welcome!</h2>
-
-                {/* Link to your Estimate page */}
-                <Link to="/estimate" className="btn">
-                    Go to Moving Estimator
-                </Link>
+                <h2>Customer Details</h2>
+                {notes.map((note) => (<Note note={note} onDelete={deleteNote} key={note.id} />))}
             </div>
         </div>
     );
