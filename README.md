@@ -4,16 +4,16 @@ Goal: gain experience with full stack development, api, jwt auth, and deployment
 
 can create username/password with unique jwt
 
-can add details for the customers move in a note taking page, saves notes, ability to delete notes later
+can create an estimate on the estimate page (the landing page after login) for a customer, saves the estimate, ability to edit or delete old estimates
 
-can create an estimate on estimate page for that customer, saves estimate, ability to delete old estimates
+each estimate can have notes attached to it via an "Add Notes" button on that estimate's card, which opens an inline area to add move details (special items, access issues, etc.) and view/delete existing notes for that estimate
 
 project future goals:
 
 deep, accurate estimate information based on years of personal experience in the moving industry (utilizing information such as walk distance, steps, types of furniture/special needs (piano moving, valuable items, etc), loading dock access vs street parking)
 estimate should utilize those metrics to predict an hour estimate instead of being manually input
 
-information on estimates, notes, and a new page for completed moves should all be linked together on same table - all data should be able to be edited
+a new page for completed moves, linked to the same estimate/notes data - all data should be able to be edited
 
 
 ---
