@@ -251,7 +251,7 @@ function Estimate() {
                             )}
 
                             <button onClick={() => toggleNotes(est.id)}>
-                                {notesOpen ? "Hide Notes" : "Add Notes"}
+                                {notesOpen ? "Hide Notes" : "Show Notes"}
                             </button>
 
                             {notesOpen && (
