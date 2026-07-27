@@ -68,9 +68,13 @@ class UpdateEstimate(generics.UpdateAPIView):
         return Estimator.objects.filter(user=user)
     
     def perform_update(self, serializer):
-        square_feet = serializer.validated_data.get('square_footage')
-        pounds = serializer.validated_data.get('pound_estimate')
-        crew_size = serializer.validated_data.get('crew_size')
+        # On a partial update (PATCH), fields the client didn't send are not
+        # present in validated_data, so fall back to the existing instance
+        # values instead of passing None into calculate_price.
+        instance = serializer.instance
+        square_feet = serializer.validated_data.get('square_footage', instance.square_footage)
+        pounds = serializer.validated_data.get('pound_estimate', instance.pound_estimate)
+        crew_size = serializer.validated_data.get('crew_size', instance.crew_size)
 
         price = calculate_price(square_feet, pounds, crew_size)
 
