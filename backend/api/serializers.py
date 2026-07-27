@@ -16,11 +16,16 @@ class UserSerializer(serializers.ModelSerializer):
 class NoteSerializer(serializers.ModelSerializer):
     class Meta:
         model = Note
-        fields = ['id', 'title', 'content', 'created_at', 'author']
-        extra_kwargs = {'author': {'read_only': True}}
+        fields = ['id', 'title', 'content', 'created_at', 'author', 'estimate']
+        extra_kwargs = {'author': {'read_only': True}, 'estimate': {'read_only': True}}
 
 class EstimatorSerializer(serializers.ModelSerializer):
+    notes = NoteSerializer(many=True, read_only=True)
+
     class Meta:
         model = Estimator
-        fields = ['id', 'user', 'customer_name', 'square_footage', 'pound_estimate', 'crew_size', 'price', 'created_at', 'updated_at']
+        fields = [
+            'id', 'user', 'customer_name', 'square_footage', 'pound_estimate',
+            'crew_size', 'price', 'created_at', 'updated_at', 'notes',
+        ]
         extra_kwargs = {'user': {'read_only': True}, 'price': {'read_only': True}, 'created_at': {'read_only': True}, 'updated_at': {'read_only': True}}

@@ -74,10 +74,20 @@ class TokenAuthTests(APITestCase):
 
 
 class NoteApiTests(APITestCase):
+    """Notes are always scoped to an estimate: /api/estimates/<id>/notes/."""
+
     def setUp(self):
         self.user = User.objects.create_user(username="noteuser", password="pass12345")
         self.other_user = User.objects.create_user(username="otheruser", password="pass12345")
-        self.list_url = "/api/notes/"
+        self.estimate = Estimator.objects.create(
+            user=self.user, customer_name="Mine", square_footage=100,
+            pound_estimate=100, crew_size=1, price=100,
+        )
+        self.other_estimate = Estimator.objects.create(
+            user=self.other_user, customer_name="Not mine", square_footage=100,
+            pound_estimate=100, crew_size=1, price=100,
+        )
+        self.list_url = f"/api/estimates/{self.estimate.id}/notes/"
 
     def test_unauthenticated_user_cannot_list_notes(self):
         # SessionAuthentication has no WWW-Authenticate header, so DRF's
@@ -85,7 +95,7 @@ class NoteApiTests(APITestCase):
         response = self.client.get(self.list_url)
         self.assertEqual(response.status_code, status.HTTP_403_FORBIDDEN)
 
-    def test_authenticated_user_can_create_note(self):
+    def test_authenticated_user_can_create_note_on_own_estimate(self):
         self.client.force_authenticate(user=self.user)
         response = self.client.post(
             self.list_url, {"title": "Move details", "content": "3 bedroom house"}
@@ -93,20 +103,45 @@ class NoteApiTests(APITestCase):
         self.assertEqual(response.status_code, status.HTTP_201_CREATED)
         note = Note.objects.get(id=response.data["id"])
         self.assertEqual(note.author, self.user)
+        self.assertEqual(note.estimate, self.estimate)
 
-    def test_user_only_sees_own_notes(self):
-        Note.objects.create(title="Mine", content="visible", author=self.user)
-        Note.objects.create(title="Not mine", content="hidden", author=self.other_user)
+    def test_user_cannot_create_note_on_someone_elses_estimate(self):
+        self.client.force_authenticate(user=self.user)
+        response = self.client.post(
+            f"/api/estimates/{self.other_estimate.id}/notes/",
+            {"title": "Sneaky", "content": "nope"},
+        )
+        self.assertEqual(response.status_code, status.HTTP_404_NOT_FOUND)
+        self.assertFalse(Note.objects.filter(title="Sneaky").exists())
+
+    def test_user_only_sees_notes_for_the_given_estimate(self):
+        other_estimate_of_mine = Estimator.objects.create(
+            user=self.user, customer_name="Also mine", square_footage=100,
+            pound_estimate=100, crew_size=1, price=100,
+        )
+        Note.objects.create(title="On estimate 1", content="visible", author=self.user, estimate=self.estimate)
+        Note.objects.create(title="On estimate 2", content="hidden", author=self.user, estimate=other_estimate_of_mine)
 
         self.client.force_authenticate(user=self.user)
         response = self.client.get(self.list_url)
 
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         self.assertEqual(len(response.data), 1)
-        self.assertEqual(response.data[0]["title"], "Mine")
+        self.assertEqual(response.data[0]["title"], "On estimate 1")
+
+    def test_notes_appear_nested_in_the_estimate_response(self):
+        Note.objects.create(title="Fragile items", content="wrap the china", author=self.user, estimate=self.estimate)
+
+        self.client.force_authenticate(user=self.user)
+        response = self.client.get("/api/estimates/")
+
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        matching = [e for e in response.data if e["id"] == self.estimate.id][0]
+        self.assertEqual(len(matching["notes"]), 1)
+        self.assertEqual(matching["notes"][0]["title"], "Fragile items")
 
     def test_user_can_delete_own_note(self):
-        note = Note.objects.create(title="Delete me", content="bye", author=self.user)
+        note = Note.objects.create(title="Delete me", content="bye", author=self.user, estimate=self.estimate)
         self.client.force_authenticate(user=self.user)
 
         response = self.client.delete(f"/api/notes/delete/{note.id}/")
@@ -115,7 +150,7 @@ class NoteApiTests(APITestCase):
         self.assertFalse(Note.objects.filter(id=note.id).exists())
 
     def test_user_cannot_delete_other_users_note(self):
-        note = Note.objects.create(title="Not yours", content="nope", author=self.other_user)
+        note = Note.objects.create(title="Not yours", content="nope", author=self.other_user, estimate=self.other_estimate)
         self.client.force_authenticate(user=self.user)
 
         response = self.client.delete(f"/api/notes/delete/{note.id}/")

@@ -1,4 +1,4 @@
-from django.shortcuts import render
+from django.shortcuts import render, get_object_or_404
 from django.contrib.auth.models import User
 from rest_framework import generics
 from .serializers import EstimatorSerializer, UserSerializer, NoteSerializer
@@ -7,18 +7,25 @@ from .models import Note, Estimator
 from .services import calculate_price
 
 class NoteListCreate(generics.ListCreateAPIView):
+    """List/create notes scoped to a single estimate, e.g.
+    /api/estimates/<estimate_id>/notes/. Notes always belong to an estimate
+    owned by the requesting user; 404s if the estimate doesn't exist or
+    belongs to someone else, rather than leaking which estimate IDs exist."""
     serializer_class = NoteSerializer
     permission_classes = [IsAuthenticated]
 
+    def get_estimate(self):
+        return get_object_or_404(
+            Estimator, pk=self.kwargs['estimate_id'], user=self.request.user
+        )
+
     def get_queryset(self):
-        user = self.request.user
-        return Note.objects.filter(author=user)
-    
+        estimate = self.get_estimate()
+        return Note.objects.filter(author=self.request.user, estimate=estimate)
+
     def perform_create(self, serializer):
-        if serializer.is_valid():
-            serializer.save(author=self.request.user)
-        else:
-            print(serializer.errors)
+        estimate = self.get_estimate()
+        serializer.save(author=self.request.user, estimate=estimate)
 
 class NoteDelete(generics.DestroyAPIView):
     serializer_class = NoteSerializer

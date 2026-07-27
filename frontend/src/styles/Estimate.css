@@ -147,13 +147,30 @@
     transition: border-color 0.15s ease, box-shadow 0.15s ease;
 }
 
-.estimate-result input:focus {
+.estimate-result input:focus,
+.estimate-result textarea:focus {
     outline: none;
     border-color: var(--color-primary);
     box-shadow: 0 0 0 3px var(--color-primary-soft);
 }
 
-.estimate-result button {
+.estimate-result textarea {
+    width: 100%;
+    padding: 8px 10px;
+    margin: 2px 0;
+    font-size: 0.9rem;
+    font-family: inherit;
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-sm);
+    box-sizing: border-box;
+    resize: vertical;
+    min-height: 60px;
+    transition: border-color 0.15s ease, box-shadow 0.15s ease;
+}
+
+/* Direct children only: a Note card nested inside .notes-panel has its own
+   delete button, which must not be caught by these positional rules. */
+.estimate-result > button {
     width: 100%;
     padding: 9px;
     margin-top: 6px;
@@ -164,24 +181,69 @@
     transition: background-color 0.15s ease, color 0.15s ease, border-color 0.15s ease;
 }
 
-.estimate-result button:nth-of-type(1) {
+.estimate-result > button:nth-of-type(1) {
     background-color: var(--color-primary);
     color: white;
     border: none;
 }
 
-.estimate-result button:nth-of-type(1):hover {
+.estimate-result > button:nth-of-type(1):hover {
     background-color: var(--color-primary-hover);
 }
 
-.estimate-result button:nth-of-type(2) {
+.estimate-result > button:nth-of-type(2) {
     background-color: transparent;
     color: var(--color-text-muted);
     border: 1px solid var(--color-border);
 }
 
-.estimate-result button:nth-of-type(2):hover {
+.estimate-result > button:nth-of-type(2):hover {
     color: #b91c1c;
     border-color: #fecaca;
     background-color: #fef2f2;
+}
+
+/* "Add Notes" / "Hide Notes" toggle: a quiet accent button, distinct from
+   both the primary (Edit/Save) and ghost (Delete/Cancel) styles. */
+.estimate-result > button:nth-of-type(3) {
+    background-color: var(--color-primary-soft);
+    color: var(--color-primary-hover);
+    border: 1px solid transparent;
+}
+
+.estimate-result > button:nth-of-type(3):hover {
+    background-color: #dbeafe;
+}
+
+.notes-panel {
+    margin-top: 10px;
+    padding-top: 10px;
+    border-top: 1px solid var(--color-border);
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.note-form {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+
+.note-form input[type="submit"] {
+    width: 100%;
+    padding: 8px;
+    margin-top: 2px;
+    background-color: var(--color-primary);
+    color: white;
+    font-weight: 600;
+    font-size: 0.85rem;
+    border: none;
+    border-radius: var(--radius-sm);
+    cursor: pointer;
+    transition: background-color 0.15s ease;
+}
+
+.note-form input[type="submit"]:hover {
+    background-color: var(--color-primary-hover);
 }
