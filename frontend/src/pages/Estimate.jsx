@@ -245,7 +245,7 @@ function Estimate() {
     }
 
     return (
-        <div>
+        <div className="estimator-container">
 
             {/* === Create Estimate Form === */}
             <h2>Create a New Estimate</h2>
