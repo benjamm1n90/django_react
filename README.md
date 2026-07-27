@@ -15,3 +15,36 @@ estimate should utilize those metrics to predict an hour estimate instead of bei
 
 information on estimates, notes, and a new page for completed moves should all be linked together on same table - all data should be able to be edited
 
+
+---
+
+## Running with Docker
+
+The whole stack (Postgres, Django/gunicorn backend, nginx-served React frontend) runs via Docker Compose:
+
+```
+cp .env.docker.example .env
+docker compose up --build
+```
+
+- Frontend: http://localhost:5173
+- Backend API: http://localhost:8000
+
+Edit `.env` to set real values for `DJANGO_SECRET_KEY`, `POSTGRES_PASSWORD`, etc. before deploying anywhere beyond local testing.
+
+## Running tests
+
+Backend (Django):
+
+```
+cd backend
+python manage.py test api
+```
+
+Frontend (Vitest + React Testing Library):
+
+```
+cd frontend
+npm install
+npm test
+```
