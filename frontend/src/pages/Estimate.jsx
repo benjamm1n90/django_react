@@ -8,7 +8,7 @@ import Note from "../components/Note"
 // duplication with Tailwind in React - no need for @apply or a component
 // library for something this small.
 const inputClass =
-    "w-full rounded-lg border border-slate-200 bg-white px-3 py-2.5 text-[0.95rem] text-slate-800 transition-colors focus:border-blue-600 focus:outline-none focus:ring-[3px] focus:ring-blue-50"
+    "w-full rounded-lg border border-cyan-500/30 bg-black/40 px-3 py-2.5 text-[0.95rem] text-cyan-100 placeholder:text-slate-500 transition-colors focus:border-cyan-400 focus:outline-none focus:ring-[3px] focus:ring-cyan-400/30"
 
 function Estimate() {
 
@@ -149,15 +149,15 @@ function Estimate() {
     }
 
     return (
-        <div className="mx-auto my-12 max-w-[860px] rounded-2xl bg-slate-50 p-8 text-slate-800">
+        <div className="mx-auto my-12 max-w-[860px] p-8 text-slate-200">
 
             {/* === Create Estimate Form === */}
-            <h2 className="mb-5 text-2xl font-semibold tracking-tight text-slate-800">Create a New Estimate</h2>
+            <h2 className="mb-5 text-2xl font-semibold uppercase tracking-widest text-cyan-300">Create a New Estimate</h2>
             <form
                 onSubmit={createEstimate}
-                className="mb-10 grid grid-cols-2 items-start gap-x-5 gap-y-1 rounded-2xl border border-slate-200 bg-white p-7 shadow-sm"
+                className="mb-10 grid grid-cols-2 items-start gap-x-5 gap-y-1 rounded-2xl border border-cyan-500/30 bg-black/50 p-7 shadow-[0_0_30px_rgba(34,211,238,0.12)] backdrop-blur-md"
             >
-                <label className="mt-3 mb-1.5 text-sm font-semibold text-slate-500">Customer Name</label>
+                <label className="mt-3 mb-1.5 text-xs font-semibold uppercase tracking-wider text-slate-400">Customer Name</label>
                 <input
                     type="text"
                     className={inputClass}
@@ -166,7 +166,7 @@ function Estimate() {
                     required
                 />
 
-                <label className="mt-3 mb-1.5 text-sm font-semibold text-slate-500">Square Footage</label>
+                <label className="mt-3 mb-1.5 text-xs font-semibold uppercase tracking-wider text-slate-400">Square Footage</label>
                 <input
                     type="number"
                     className={inputClass}
@@ -175,7 +175,7 @@ function Estimate() {
                     required
                 />
 
-                <label className="mt-3 mb-1.5 text-sm font-semibold text-slate-500">Pound Estimate</label>
+                <label className="mt-3 mb-1.5 text-xs font-semibold uppercase tracking-wider text-slate-400">Pound Estimate</label>
                 <input
                     type="number"
                     className={inputClass}
@@ -184,7 +184,7 @@ function Estimate() {
                     required
                 />
 
-                <label className="mt-3 mb-1.5 text-sm font-semibold text-slate-500">Crew Size</label>
+                <label className="mt-3 mb-1.5 text-xs font-semibold uppercase tracking-wider text-slate-400">Crew Size</label>
                 <input
                     type="number"
                     className={inputClass}
@@ -196,13 +196,13 @@ function Estimate() {
                 <input
                     type="submit"
                     value="Submit"
-                    className="col-span-2 mt-4 cursor-pointer rounded-lg bg-blue-600 p-3 text-sm font-semibold text-white transition-colors hover:bg-blue-700"
+                    className="col-span-2 mt-4 cursor-pointer rounded-lg border border-purple-400 bg-purple-500/10 p-3 text-sm font-semibold uppercase tracking-wide text-purple-300 transition-colors hover:bg-purple-500/20 hover:shadow-[0_0_20px_rgba(168,85,247,0.5)]"
                 />
             </form>
 
             {/* === Previous Estimates List === */}
             <div className="grid grid-cols-[repeat(auto-fill,minmax(260px,1fr))] items-start gap-5">
-                <h2 className="col-span-full text-2xl font-semibold tracking-tight text-slate-800">Previous Estimates</h2>
+                <h2 className="col-span-full text-2xl font-semibold uppercase tracking-widest text-cyan-300">Previous Estimates</h2>
 
                 {estimates.map((est) => {
                     const notesOpen = openNotesIds.has(est.id)
@@ -211,7 +211,7 @@ function Estimate() {
                     return (
                         <div
                             key={est.id}
-                            className="flex flex-col gap-1.5 rounded-xl border border-slate-200 bg-white p-5 shadow-sm transition hover:-translate-y-0.5 hover:shadow-lg"
+                            className="flex flex-col gap-1.5 rounded-xl border border-cyan-500/25 bg-black/45 p-5 shadow-[0_0_15px_rgba(34,211,238,0.1)] backdrop-blur-md transition hover:-translate-y-0.5 hover:border-cyan-400/50 hover:shadow-[0_0_25px_rgba(34,211,238,0.25)]"
                         >
 
                             {editingId === est.id ? (
@@ -249,40 +249,40 @@ function Estimate() {
 
                                     <button
                                         onClick={() => updateEstimate(est.id)}
-                                        className="mt-1.5 w-full rounded-lg bg-blue-600 px-3 py-2 text-sm font-semibold text-white transition-colors hover:bg-blue-700"
+                                        className="mt-1.5 w-full rounded-lg border border-cyan-400 bg-cyan-500/10 px-3 py-2 text-sm font-semibold uppercase tracking-wide text-cyan-300 transition-colors hover:bg-cyan-500/20 hover:shadow-[0_0_15px_rgba(34,211,238,0.5)]"
                                     >
                                         Save
                                     </button>
 
                                     <button
                                         onClick={() => setEditingId(null)}
-                                        className="w-full rounded-lg border border-slate-200 px-3 py-2 text-sm font-semibold text-slate-500 transition-colors hover:border-red-200 hover:bg-red-50 hover:text-red-700"
+                                        className="w-full rounded-lg border border-red-500/40 px-3 py-2 text-sm font-semibold uppercase tracking-wide text-red-300 transition-colors hover:border-red-400 hover:bg-red-500/10 hover:shadow-[0_0_15px_rgba(239,68,68,0.4)]"
                                     >
                                         Cancel
                                     </button>
                                 </>
                             ) : (
                                 <>
-                                    <p className="text-sm text-slate-500">Customer Name: {est.customer_name}</p>
-                                    <p className="text-sm text-slate-500">Square Footage: {est.square_footage}</p>
-                                    <p className="text-sm text-slate-500">Pound Estimate: {est.pound_estimate}</p>
-                                    <p className="text-sm text-slate-500">Crew Size: {est.crew_size}</p>
-                                    <p className="text-sm text-slate-500">
+                                    <p className="text-sm text-slate-300">Customer Name: {est.customer_name}</p>
+                                    <p className="text-sm text-slate-300">Square Footage: {est.square_footage}</p>
+                                    <p className="text-sm text-slate-300">Pound Estimate: {est.pound_estimate}</p>
+                                    <p className="text-sm text-slate-300">Crew Size: {est.crew_size}</p>
+                                    <p className="text-sm text-slate-300">
                                         Total Price:
-                                        <strong className="mt-1.5 block text-2xl font-bold text-blue-600">${est.price}</strong>
+                                        <strong className="mt-1.5 block text-2xl font-bold text-purple-300 [text-shadow:0_0_12px_rgba(192,132,252,0.6)]">${est.price}</strong>
                                     </p>
-                                    <p className="text-sm text-slate-500">Created: {new Date(est.created_at).toLocaleString()}</p>
-                                    <p className="text-sm text-slate-500">Last Updated: {new Date(est.updated_at).toLocaleString()}</p>
+                                    <p className="text-sm text-slate-300">Created: {new Date(est.created_at).toLocaleString()}</p>
+                                    <p className="text-sm text-slate-300">Last Updated: {new Date(est.updated_at).toLocaleString()}</p>
                                     <button
                                         onClick={() => startEdit(est)}
-                                        className="mt-1.5 w-full rounded-lg bg-blue-600 px-3 py-2 text-sm font-semibold text-white transition-colors hover:bg-blue-700"
+                                        className="mt-1.5 w-full rounded-lg border border-cyan-400 bg-cyan-500/10 px-3 py-2 text-sm font-semibold uppercase tracking-wide text-cyan-300 transition-colors hover:bg-cyan-500/20 hover:shadow-[0_0_15px_rgba(34,211,238,0.5)]"
                                     >
                                         Edit
                                     </button>
 
                                     <button
                                         onClick={() => deleteEstimate(est.id)}
-                                        className="w-full rounded-lg border border-slate-200 px-3 py-2 text-sm font-semibold text-slate-500 transition-colors hover:border-red-200 hover:bg-red-50 hover:text-red-700"
+                                        className="w-full rounded-lg border border-red-500/40 px-3 py-2 text-sm font-semibold uppercase tracking-wide text-red-300 transition-colors hover:border-red-400 hover:bg-red-500/10 hover:shadow-[0_0_15px_rgba(239,68,68,0.4)]"
                                     >
                                         Delete
                                     </button>
@@ -291,13 +291,13 @@ function Estimate() {
 
                             <button
                                 onClick={() => toggleNotes(est.id)}
-                                className="w-full rounded-lg bg-blue-50 px-3 py-2 text-sm font-semibold text-blue-700 transition-colors hover:bg-blue-100"
+                                className="w-full rounded-lg border border-purple-400/60 bg-purple-500/10 px-3 py-2 text-sm font-semibold uppercase tracking-wide text-purple-300 transition-colors hover:bg-purple-500/20 hover:shadow-[0_0_15px_rgba(168,85,247,0.5)]"
                             >
                                 {notesOpen ? "Hide Notes" : "Show Notes"}
                             </button>
 
                             {notesOpen && (
-                                <div className="mt-2.5 flex flex-col gap-2 border-t border-slate-200 pt-2.5">
+                                <div className="mt-2.5 flex flex-col gap-2 border-t border-cyan-500/20 pt-2.5">
                                     {(est.notes || []).map((note) => (
                                         <Note note={note} onDelete={deleteNote} key={note.id} />
                                     ))}
@@ -321,7 +321,7 @@ function Estimate() {
                                         <input
                                             type="submit"
                                             value="Save Note"
-                                            className="w-full cursor-pointer rounded-lg bg-blue-600 py-2 text-sm font-semibold text-white transition-colors hover:bg-blue-700"
+                                            className="w-full cursor-pointer rounded-lg border border-purple-400 bg-purple-500/10 py-2 text-sm font-semibold uppercase tracking-wide text-purple-300 transition-colors hover:bg-purple-500/20 hover:shadow-[0_0_15px_rgba(168,85,247,0.5)]"
                                         />
                                     </form>
                                 </div>
