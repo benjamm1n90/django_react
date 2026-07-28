@@ -1,1 +1,11 @@
 @import "tailwindcss";
+
+body {
+    min-height: 100vh;
+    background-color: #000;
+    background-image: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.85)), url("/sci-fi-bg.jpg");
+    background-size: cover;
+    background-position: center;
+    background-attachment: fixed;
+    color: #e2e8f0;
+}

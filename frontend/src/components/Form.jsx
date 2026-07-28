@@ -34,18 +34,18 @@ function Form({ route, method }) {
     }
 
     return (
-        <div className="flex min-h-screen items-center justify-center bg-slate-50 px-4">
-            <form onSubmit={handleSubmit} className="w-full max-w-sm rounded-2xl border border-slate-200 bg-white p-8 shadow-sm">
-                <h1 className="mb-6 text-center text-xl font-semibold text-slate-800">{name}</h1>
+        <div className="flex min-h-screen items-center justify-center px-4">
+            <form onSubmit={handleSubmit} className="w-full max-w-sm rounded-2xl border border-cyan-500/30 bg-black/50 p-8 shadow-[0_0_30px_rgba(34,211,238,0.15)] backdrop-blur-md">
+                <h1 className="mb-6 text-center text-xl font-semibold uppercase tracking-widest text-cyan-300">{name}</h1>
                 <input
-                    className="mb-4 w-full rounded-lg border border-slate-200 px-3 py-2.5 text-sm text-slate-800 transition-colors focus:border-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-100"
+                    className="mb-4 w-full rounded-lg border border-cyan-500/30 bg-black/40 px-3 py-2.5 text-sm text-cyan-100 placeholder:text-slate-500 transition-colors focus:border-cyan-400 focus:outline-none focus:ring-2 focus:ring-cyan-400/40"
                     type="text"
                     value={username}
                     onChange={(e) => setUsername(e.target.value)}
                     placeholder="Username"
                 />
                 <input
-                    className="mb-4 w-full rounded-lg border border-slate-200 px-3 py-2.5 text-sm text-slate-800 transition-colors focus:border-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-100"
+                    className="mb-4 w-full rounded-lg border border-cyan-500/30 bg-black/40 px-3 py-2.5 text-sm text-cyan-100 placeholder:text-slate-500 transition-colors focus:border-cyan-400 focus:outline-none focus:ring-2 focus:ring-cyan-400/40"
                     type="password"
                     value={password}
                     onChange={(e) => setPassword(e.target.value)}
@@ -53,7 +53,7 @@ function Form({ route, method }) {
                 />
                 {loading && <LoadingIndicator />}
                 <button
-                    className="mt-2 w-full rounded-lg bg-blue-600 py-2.5 text-sm font-semibold text-white transition-colors hover:bg-blue-700"
+                    className="mt-2 w-full rounded-lg border border-purple-400 bg-purple-500/10 py-2.5 text-sm font-semibold uppercase tracking-wide text-purple-300 transition-colors hover:bg-purple-500/20 hover:shadow-[0_0_15px_rgba(168,85,247,0.5)]"
                     type="submit"
                 >
                     {name}
