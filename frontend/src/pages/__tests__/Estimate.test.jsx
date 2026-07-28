@@ -33,7 +33,7 @@ describe('Estimate page notes', () => {
     expect(api.get).toHaveBeenCalledWith('/api/estimates/')
   })
 
-  it('shows an "Add Notes" toggle that reveals a note form, and hides it again', async () => {
+  it('shows a "Show Notes" toggle that reveals a note form, and hides it again', async () => {
     api.get.mockResolvedValue({ data: [baseEstimate] })
 
     render(<Estimate />)
@@ -41,7 +41,7 @@ describe('Estimate page notes', () => {
 
     expect(screen.queryByPlaceholderText('Note title')).not.toBeInTheDocument()
 
-    fireEvent.click(screen.getByRole('button', { name: 'Add Notes' }))
+    fireEvent.click(screen.getByRole('button', { name: 'Show Notes' }))
     expect(screen.getByPlaceholderText('Note title')).toBeInTheDocument()
 
     fireEvent.click(screen.getByRole('button', { name: 'Hide Notes' }))
@@ -58,7 +58,7 @@ describe('Estimate page notes', () => {
     render(<Estimate />)
     await waitFor(() => expect(screen.getByText(/Jane Doe/)).toBeInTheDocument())
 
-    fireEvent.click(screen.getByRole('button', { name: 'Add Notes' }))
+    fireEvent.click(screen.getByRole('button', { name: 'Show Notes' }))
     expect(screen.getByText('Fragile items')).toBeInTheDocument()
     expect(screen.getByText('wrap the china')).toBeInTheDocument()
   })
@@ -70,7 +70,7 @@ describe('Estimate page notes', () => {
     render(<Estimate />)
     await waitFor(() => expect(screen.getByText(/Jane Doe/)).toBeInTheDocument())
 
-    fireEvent.click(screen.getByRole('button', { name: 'Add Notes' }))
+    fireEvent.click(screen.getByRole('button', { name: 'Show Notes' }))
     fireEvent.change(screen.getByPlaceholderText('Note title'), { target: { value: 'Heavy piano' } })
     fireEvent.change(screen.getByPlaceholderText('Note details'), { target: { value: 'needs 2 extra movers' } })
     fireEvent.click(screen.getByRole('button', { name: 'Save Note' }))
@@ -95,8 +95,8 @@ describe('Estimate page notes', () => {
     render(<Estimate />)
     await waitFor(() => expect(screen.getByText(/Jane Doe/)).toBeInTheDocument())
 
-    fireEvent.click(screen.getByRole('button', { name: 'Add Notes' }))
-    const noteCard = screen.getByText('Fragile items').closest('.note-container')
+    fireEvent.click(screen.getByRole('button', { name: 'Show Notes' }))
+    const noteCard = screen.getByTestId('note-card')
     fireEvent.click(within(noteCard).getByRole('button', { name: 'Delete' }))
 
     await waitFor(() => expect(api.delete).toHaveBeenCalledWith('/api/notes/delete/5/'))

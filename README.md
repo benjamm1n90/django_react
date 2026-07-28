@@ -6,7 +6,7 @@ can create username/password with unique jwt
 
 can create an estimate on the estimate page (the landing page after login) for a customer, saves the estimate, ability to edit or delete old estimates
 
-each estimate can have notes attached to it via an "Add Notes" button on that estimate's card, which opens an inline area to add move details (special items, access issues, etc.) and view/delete existing notes for that estimate
+each estimate can have notes attached to it via a "Show Notes" button on that estimate's card, which opens an inline area to add move details (special items, access issues, etc.) and view/delete existing notes for that estimate
 
 project future goals:
 
@@ -31,6 +31,10 @@ docker compose up --build
 - Backend API: http://localhost:8000
 
 Edit `.env` to set real values for `DJANGO_SECRET_KEY`, `POSTGRES_PASSWORD`, etc. before deploying anywhere beyond local testing.
+
+## Styling
+
+Uses Tailwind CSS (v4, via the `@tailwindcss/vite` plugin - no separate config file needed). Utility classes live directly on components; `frontend/src/index.css` just contains the single `@import "tailwindcss";` that pulls it all in.
 
 ## Running tests
 

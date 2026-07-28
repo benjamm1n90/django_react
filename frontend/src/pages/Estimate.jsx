@@ -1,7 +1,14 @@
 import { useState, useEffect } from "react"
 import api from "../api"
 import Note from "../components/Note"
-import "../styles/Estimate.css"
+
+// Shared input styling, reused across the create form, the inline edit
+// fields, and the note-creation form. Pulling repeated utility strings
+// into a plain constant like this is the idiomatic way to avoid
+// duplication with Tailwind in React - no need for @apply or a component
+// library for something this small.
+const inputClass =
+    "w-full rounded-lg border border-slate-200 bg-white px-3 py-2.5 text-[0.95rem] text-slate-800 transition-colors focus:border-blue-600 focus:outline-none focus:ring-[3px] focus:ring-blue-50"
 
 function Estimate() {
 
@@ -142,62 +149,76 @@ function Estimate() {
     }
 
     return (
-        <div className="estimator-container">
+        <div className="mx-auto my-12 max-w-[860px] rounded-2xl bg-slate-50 p-8 text-slate-800">
 
             {/* === Create Estimate Form === */}
-            <h2>Create a New Estimate</h2>
-            <form onSubmit={createEstimate} className="estimator-form">
-
-                <label>Customer Name</label>
+            <h2 className="mb-5 text-2xl font-semibold tracking-tight text-slate-800">Create a New Estimate</h2>
+            <form
+                onSubmit={createEstimate}
+                className="mb-10 grid grid-cols-2 items-start gap-x-5 gap-y-1 rounded-2xl border border-slate-200 bg-white p-7 shadow-sm"
+            >
+                <label className="mt-3 mb-1.5 text-sm font-semibold text-slate-500">Customer Name</label>
                 <input
                     type="text"
+                    className={inputClass}
                     value={customerName}
                     onChange={(e) => setCustomerName(e.target.value)}
                     required
                 />
 
-                <label>Square Footage</label>
+                <label className="mt-3 mb-1.5 text-sm font-semibold text-slate-500">Square Footage</label>
                 <input
                     type="number"
+                    className={inputClass}
                     value={squareFootage}
                     onChange={(e) => setSquareFootage(e.target.value)}
                     required
                 />
 
-                <label>Pound Estimate</label>
+                <label className="mt-3 mb-1.5 text-sm font-semibold text-slate-500">Pound Estimate</label>
                 <input
                     type="number"
+                    className={inputClass}
                     value={poundEstimate}
                     onChange={(e) => setPoundEstimate(e.target.value)}
                     required
                 />
 
-                <label>Crew Size</label>
+                <label className="mt-3 mb-1.5 text-sm font-semibold text-slate-500">Crew Size</label>
                 <input
                     type="number"
+                    className={inputClass}
                     value={crewSize}
                     onChange={(e) => setCrewSize(e.target.value)}
                     required
                 />
 
-                <input type="submit" value="Submit" />
+                <input
+                    type="submit"
+                    value="Submit"
+                    className="col-span-2 mt-4 cursor-pointer rounded-lg bg-blue-600 p-3 text-sm font-semibold text-white transition-colors hover:bg-blue-700"
+                />
             </form>
 
             {/* === Previous Estimates List === */}
-            <div>
-                <h2>Previous Estimates</h2>
+            <div className="grid grid-cols-[repeat(auto-fill,minmax(260px,1fr))] items-start gap-5">
+                <h2 className="col-span-full text-2xl font-semibold tracking-tight text-slate-800">Previous Estimates</h2>
 
                 {estimates.map((est) => {
                     const notesOpen = openNotesIds.has(est.id)
                     const draft = noteDrafts[est.id] || { title: "", content: "" }
 
                     return (
-                        <div key={est.id} className="estimate-result">
+                        <div
+                            key={est.id}
+                            className="flex flex-col gap-1.5 rounded-xl border border-slate-200 bg-white p-5 shadow-sm transition hover:-translate-y-0.5 hover:shadow-lg"
+                        >
 
                             {editingId === est.id ? (
                                 <>
                                     <input
                                         name="customer_name"
+                                        className={inputClass}
                                         value={editForm.customer_name}
                                         onChange={handleEditChange}
                                     />
@@ -205,6 +226,7 @@ function Estimate() {
                                     <input
                                         name="square_footage"
                                         type="number"
+                                        className={inputClass}
                                         value={editForm.square_footage}
                                         onChange={handleEditChange}
                                     />
@@ -212,6 +234,7 @@ function Estimate() {
                                     <input
                                         name="pound_estimate"
                                         type="number"
+                                        className={inputClass}
                                         value={editForm.pound_estimate}
                                         onChange={handleEditChange}
                                     />
@@ -219,67 +242,90 @@ function Estimate() {
                                     <input
                                         name="crew_size"
                                         type="number"
+                                        className={inputClass}
                                         value={editForm.crew_size}
                                         onChange={handleEditChange}
                                     />
 
-                                    <button onClick={() => updateEstimate(est.id)}>
+                                    <button
+                                        onClick={() => updateEstimate(est.id)}
+                                        className="mt-1.5 w-full rounded-lg bg-blue-600 px-3 py-2 text-sm font-semibold text-white transition-colors hover:bg-blue-700"
+                                    >
                                         Save
                                     </button>
 
-                                    <button onClick={() => setEditingId(null)}>
+                                    <button
+                                        onClick={() => setEditingId(null)}
+                                        className="w-full rounded-lg border border-slate-200 px-3 py-2 text-sm font-semibold text-slate-500 transition-colors hover:border-red-200 hover:bg-red-50 hover:text-red-700"
+                                    >
                                         Cancel
                                     </button>
                                 </>
                             ) : (
                                 <>
-                                    <p>Customer Name: {est.customer_name}</p>
-                                    <p>Square Footage: {est.square_footage}</p>
-                                    <p>Pound Estimate: {est.pound_estimate}</p>
-                                    <p>Crew Size: {est.crew_size}</p>
-                                    <p><strong>Total Price: ${est.price}</strong></p>
-                                    <p>Created: {new Date(est.created_at).toLocaleString()}</p>
-                                    <p>Last Updated: {new Date(est.updated_at).toLocaleString()}</p>
-                                    <button onClick={() => startEdit(est)}>
+                                    <p className="text-sm text-slate-500">Customer Name: {est.customer_name}</p>
+                                    <p className="text-sm text-slate-500">Square Footage: {est.square_footage}</p>
+                                    <p className="text-sm text-slate-500">Pound Estimate: {est.pound_estimate}</p>
+                                    <p className="text-sm text-slate-500">Crew Size: {est.crew_size}</p>
+                                    <p className="text-sm text-slate-500">
+                                        Total Price:
+                                        <strong className="mt-1.5 block text-2xl font-bold text-blue-600">${est.price}</strong>
+                                    </p>
+                                    <p className="text-sm text-slate-500">Created: {new Date(est.created_at).toLocaleString()}</p>
+                                    <p className="text-sm text-slate-500">Last Updated: {new Date(est.updated_at).toLocaleString()}</p>
+                                    <button
+                                        onClick={() => startEdit(est)}
+                                        className="mt-1.5 w-full rounded-lg bg-blue-600 px-3 py-2 text-sm font-semibold text-white transition-colors hover:bg-blue-700"
+                                    >
                                         Edit
                                     </button>
 
-                                    <button onClick={() => deleteEstimate(est.id)}>
+                                    <button
+                                        onClick={() => deleteEstimate(est.id)}
+                                        className="w-full rounded-lg border border-slate-200 px-3 py-2 text-sm font-semibold text-slate-500 transition-colors hover:border-red-200 hover:bg-red-50 hover:text-red-700"
+                                    >
                                         Delete
                                     </button>
                                 </>
                             )}
 
-                            <button onClick={() => toggleNotes(est.id)}>
+                            <button
+                                onClick={() => toggleNotes(est.id)}
+                                className="w-full rounded-lg bg-blue-50 px-3 py-2 text-sm font-semibold text-blue-700 transition-colors hover:bg-blue-100"
+                            >
                                 {notesOpen ? "Hide Notes" : "Show Notes"}
                             </button>
 
                             {notesOpen && (
-                                <div className="notes-panel">
+                                <div className="mt-2.5 flex flex-col gap-2 border-t border-slate-200 pt-2.5">
                                     {(est.notes || []).map((note) => (
                                         <Note note={note} onDelete={deleteNote} key={note.id} />
                                     ))}
 
-                                    <form onSubmit={(e) => createNote(est.id, e)} className="note-form">
+                                    <form onSubmit={(e) => createNote(est.id, e)} className="flex flex-col gap-1.5">
                                         <input
                                             type="text"
                                             placeholder="Note title"
+                                            className={inputClass}
                                             value={draft.title}
                                             onChange={(e) => updateNoteDraft(est.id, "title", e.target.value)}
                                             required
                                         />
                                         <textarea
                                             placeholder="Note details"
+                                            className={`${inputClass} min-h-[60px] resize-y`}
                                             value={draft.content}
                                             onChange={(e) => updateNoteDraft(est.id, "content", e.target.value)}
                                             required
                                         />
-                                        <input type="submit" value="Save Note" />
+                                        <input
+                                            type="submit"
+                                            value="Save Note"
+                                            className="w-full cursor-pointer rounded-lg bg-blue-600 py-2 text-sm font-semibold text-white transition-colors hover:bg-blue-700"
+                                        />
                                     </form>
                                 </div>
                             )}
-
-                            <hr />
                         </div>
                     )
                 })}
